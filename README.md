@@ -1,14 +1,15 @@
 # SlightlyCutGem
 
+## *WARNING: AI Generated, I will start editing this as I put it together*
+
 **A Raspberry Pi port of** [**Quantum Village's Uncut Gem**](https://github.com/QuantumVillage/UncutGem)**: a room-temperature quantum sensor built from a diamond, some off-the-shelf modules, and a Pi.**
 
-SlightlyCutGem detects the electron spin resonance of nitrogen-vacancy (NV) centers in diamond, using optically detected magnetic resonance (ODMR). Shine green light on NV diamond and it glows red. Sweep a microwave frequency past 2.87 GHz and the glow dims slightly at resonance. Bring a magnet close and that dip splits in two. That's a quantum magnetometer on your bench, at room temperature, with no cryostat and no vacuum.
+SlightlyCutGem detects the electron spin resonance of nitrogen-vacancy (NV) centers in diamond, using optically detected magnetic resonance (ODMR). Shine green light on NV diamond and it glows red. Sweep a microwave frequency past 2.87 GHz and the glow dims slightly at resonance. Bring a magnet close and that dip splits in two. 
 
 The original Uncut Gem runs on an ESP32 with a custom PCB. SlightlyCutGem keeps the same physics and the same RF modules, but moves the brains to a Raspberry Pi 4:
 
-* **No custom PCB or fine-pitch soldering.** Plug-together modules plus one small op-amp circuit on perfboard.
 * **Python, not firmware.** Sweeps, averaging, CSV logging and plotting all happen in one script.
-* **A 16-bit external ADC** in place of the ESP32's 12-bit one, for a cleaner signal.
+* **A 16-bit external ADC** in place of the ESP32's 12-bit one, for a clean signal.
 * **Drift cancellation built in.** Every point is measured with the microwaves on and off.
 * **A simulation mode**, so you can run the whole pipeline before buying anything.
 
