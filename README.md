@@ -30,27 +30,80 @@ An NV center is a defect in diamond: a nitrogen atom next to a missing carbon. I
 With no magnet, both transitions sit at 2.87 GHz: one dip. With a field, they split by 2γB∥: two dips. Example: 3 mT gives dips at 2870 ± 84 MHz.
 
 Green light pumps the spins into the bright m\_s = 0 state. Microwaves at resonance move them into the dimmer m\_s = ±1 states, so the red fluorescence drops by a few percent at most. Microdiamond powder has every crystal orientation at once, so expect a broad dip of around 1% rather than sharp lines.
+## Here’s the whole build. 
 
+Think of it as two loops that meet at the diamond: a microwave path that pokes the spins, and an optical path that watches them.
+
+```text
 \---
+                        ┌────────────────────────────┐
+                        │      Raspberry Pi 4        │
+                        │  (runs sweep.py)           │
+                        └──┬──────┬──────┬───────┬───┘
+                   USB port│   SPI │  I2C │  5 V  │ 3.3 V
+          (USB-to-barrel)  │  pins │ pins │ pins  │ pin 1
+                           │ 19,23,│  3,5 │  2,4  │
+                           │ 24,22,│      │       │
+                           │  18   │      │       │
+                           ▼       ▼      │       │
+                  ┌─────────────────┐     │       │
+                  │ ADF4351 synth   │     │       │
+                  │ (EVAL board)    │     │       │
+                  │ 2.6 to 3.1 GHz  │     │       │
+                  └────────┬────────┘     │       │
+                    OUT+ SMA│             │       │
+                           ▼              │       │
+                  ┌─────────────────┐     │       │
+                  │  RF amplifier   │◄────┼───5 V─┤ (pin 2)
+                  │  ~+20 dBm max   │     │       │
+                  └────────┬────────┘     │       │
+                     SMA pigtail          │       │
+                           ▼              │       │
+     MICROWAVES ═══►  ( wire loop )       │       │
+                    ┌────────────────┐    │       │
+     GREEN LED ───► │  polymer block │    │       │
+     (pin 4 + 100Ω) │   ◆ diamond    │    │       │
+     527 nm         │     crystal    │    │       │
+                    └───────┬────────┘    │       │
+                     red glow (637-800 nm)│       │
+                    ░░░ red gel ░░░       │       │
+                     (blocks green)       │       │
+                    ┌───────▼────────┐    │       │
+                    │ BPW34          │    │       │
+                    │ photodiode     │    │       │
+                    └───────┬────────┘    │       │
+                     tiny current (nA)    │       │
+                    ┌───────▼────────┐    │       │
+                    │ MCP6002 op-amp │◄───┼──3.3 V┘
+                    │ (perfboard)    │    │
+                    │ current→voltage│    │
+                    └───────┬────────┘    │
+                     voltage 0 to 3.3 V   │
+                    ┌───────▼────────┐    │
+                    │ ADS1115 ADC    │────┘  (I2C back to Pi)
+                    │ 16-bit         │
+                    └────────────────┘
+```
 
 ## Hardware
 
 ### Parts
 
-|Item|Part|Notes|
-|-|-|-|
-|Computer|Raspberry Pi 4 Model B and official 5.1 V / 3 A supply|Other Pis with SPI and I2C should work; untested|
-|Microwave synthesizer|"35M-4.4GHz ADF4351 development board"|The **bare** board with a control header and 25 MHz reference, not versions with an STM32 controller or touchscreen|
-|RF amplifier|30 to 4000 MHz, 40 dB broadband amplifier board, 5 V|The same type the original Uncut Gem V1 used|
-|RF cabling|SMA male-male cable (10 to 15 cm); SMA male to bare-wire pigtail|Pigtail carries the antenna loop|
-|ADC|ADS1115 module (Adafruit 1085 or generic)|16-bit, I2C|
-|Op-amp|Microchip MCP6002-I/P (DIP-8)|Rail-to-rail, runs on 3.3 V|
-|Photodiode|Vishay BPW34||
-|Light source|Bright green 5 mm LED, about 525 nm (e.g. Cree C503B-GCN-CY0C0791) plus 100 Ω resistor|A green laser module also works and gives a bigger signal|
-|Red filter|Red lighting gel (e.g. LEE 106 Primary Red)|Blocks the green, passes the red fluorescence|
-|NV diamond|Microdiamond with NV centers (e.g. Adámas Nanotechnologies low-nitrogen NV microdiamond)|The hard part to source; see below|
-|Passives|10 MΩ, 1 MΩ, 10 kΩ resistors; 10 pF and 100 nF ceramic capacitors||
-|Misc|Perfboard, DIP-8 socket, jumper wires, enameled copper wire (about 24 AWG), clear 2-part epoxy||
+|Item|Part|Notes|Status|
+|-|-|-|-|
+|Computer|Raspberry Pi 4 Model B and official 5.1 V / 3 A supply|Other Pis with SPI and I2C should work; untested|Bought|
+|Microwave synthesizer|"35M-4.4GHz ADF4351 development board"|The **bare** board with a control header and 25 MHz reference, not versions with an STM32 controller or touchscreen|Bought|
+|RF amplifier|30 to 4000 MHz, 40 dB broadband amplifier board, 5 V|The same type the original Uncut Gem V1 used|Bought|
+|RF cabling|SMA male-male cable (10 to 15 cm); SMA male to bare-wire pigtail|Pigtail carries the antenna loop|Needed|
+|ADC|ADS1115 module (Adafruit 1085 or generic)|16-bit, I2C|Needed|
+|Op-amp|Microchip MCP6002-I/P (DIP-8)|Rail-to-rail, runs on 3.3 V|Needed|
+|Photodiode|Vishay BPW34||Needed|
+|Light source|Bright green 5 mm LED, about 525 nm (e.g. Cree C503B-GCN-CY0C0791) plus 100 Ω resistor|A green laser module also works and gives a bigger signal|Needed|
+|Red filter|Red lighting gel (e.g. LEE 106 Primary Red)|Blocks the green, passes the red fluorescence|Needed|
+|NV diamond|Microdiamond with NV centers (e.g. Adámas Nanotechnologies low-nitrogen NV microdiamond)|The hard part to source; see below|Needed|
+|Passives|10 MΩ, 1 MΩ, 10 kΩ resistors; 10 pF and 100 nF ceramic capacitors||Needed|
+|Misc|Perfboard, DIP-8 socket, jumper wires, enameled copper wire (about 24 AWG), clear 2-part epoxy|Needed|
+
 
 **On the diamond:** you need diamond with a meaningful concentration of NV centers; ordinary gem or industrial diamond won't do. Fluorescent NV microdiamond from a specialist supplier is the practical route. If you find a cheaper or hobby-friendly source, please open an issue.
 
