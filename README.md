@@ -1,41 +1,14 @@
 # SlightlyCutGem
 
-## *WARNING: AI Generated, I will start editing this as I put it together*
+#### *WARNING: Still largely AI Generated, I will start editing this as I put it together*
 
-**A Raspberry Pi port of** [**Quantum Village's Uncut Gem**](https://github.com/QuantumVillage/UncutGem)**: a room-temperature quantum sensor built from a diamond, some off-the-shelf modules, and a Pi.**
+**A Raspberry Pi port of the amazing [**Quantum Village's Uncut Gem**](https://github.com/QuantumVillage/UncutGem)**
 
-SlightlyCutGem detects the electron spin resonance of nitrogen-vacancy (NV) centers in diamond, using optically detected magnetic resonance (ODMR). Shine green light on NV diamond and it glows red. Sweep a microwave frequency past 2.87 GHz and the glow dims slightly at resonance. Bring a magnet close and that dip splits in two. 
-
-The original Uncut Gem runs on an ESP32 with a custom PCB. SlightlyCutGem keeps the same physics and the same RF modules, but moves the brains to a Raspberry Pi 4:
-
-* **Python, not firmware.** Sweeps, averaging, CSV logging and plotting all happen in one script.
-* **A 16-bit external ADC** in place of the ESP32's 12-bit one, for a clean signal.
-* **Drift cancellation built in.** Every point is measured with the microwaves on and off.
-* **A simulation mode**, so you can run the whole pipeline before buying anything.
-
-> \\\*\\\*Status:\\\*\\\* the software runs end to end in simulation, and the synthesizer register math is checked against an independent library. Real-hardware bring-up is in progress. Reports, fixes and photos are very welcome.
-
-\---
-
-## How it works
-
-An NV center is a defect in diamond: a nitrogen atom next to a missing carbon. Its trapped electrons form a spin-1 system with three states, m\_s = 0, +1 and −1. The microwave frequencies that flip the spin out of m\_s = 0 are
-
-**f± = D ± γ·B∥**
-
-* **D ≈ 2.87 GHz:** the zero-field splitting, set by the diamond itself.
-* **γ ≈ 28 MHz/mT:** the electron gyromagnetic ratio; it converts magnetic field to frequency shift.
-* **B∥:** the magnetic field component along the NV axis.
-
-With no magnet, both transitions sit at 2.87 GHz: one dip. With a field, they split by 2γB∥: two dips. Example: 3 mT gives dips at 2870 ± 84 MHz.
-
-Green light pumps the spins into the bright m\_s = 0 state. Microwaves at resonance move them into the dimmer m\_s = ±1 states, so the red fluorescence drops by a few percent at most. Microdiamond powder has every crystal orientation at once, so expect a broad dip of around 1% rather than sharp lines.
-## Here’s the whole build. 
+## Here’s the whole build
 
 Think of it as two loops that meet at the diamond: a microwave path that pokes the spins, and an optical path that watches them.
 
 ```text
-\---
                         ┌────────────────────────────┐
                         │      Raspberry Pi 4        │
                         │  (runs sweep.py)           │
@@ -62,7 +35,7 @@ Think of it as two loops that meet at the diamond: a microwave path that pokes t
      MICROWAVES ═══►  ( wire loop )       │       │
                     ┌────────────────┐    │       │
      GREEN LED ───► │  polymer block │    │       │
-     (pin 4 + 100Ω) │   ◆ diamond    │    │       │
+     (pin 4 + 100Ω) │     diamond    │    │       │
      527 nm         │     crystal    │    │       │
                     └───────┬────────┘    │       │
                      red glow (637-800 nm)│       │
@@ -84,6 +57,34 @@ Think of it as two loops that meet at the diamond: a microwave path that pokes t
                     │ 16-bit         │
                     └────────────────┘
 ```
+
+\---
+
+## How it works
+
+An NV center is a defect in diamond: a nitrogen atom next to a missing carbon. Its trapped electrons form a spin-1 system with three states, m\_s = 0, +1 and −1. The microwave frequencies that flip the spin out of m\_s = 0 are
+
+**f± = D ± γ·B∥**
+
+* **D ≈ 2.87 GHz:** the zero-field splitting, set by the diamond itself.
+* **γ ≈ 28 MHz/mT:** the electron gyromagnetic ratio; it converts magnetic field to frequency shift.
+* **B∥:** the magnetic field component along the NV axis.
+
+With no magnet, both transitions sit at 2.87 GHz: one dip. With a field, they split by 2γB∥: two dips. Example: 3 mT gives dips at 2870 ± 84 MHz.
+
+Green light pumps the spins into the bright m\_s = 0 state. Microwaves at resonance move them into the dimmer m\_s = ±1 states, so the red fluorescence drops by a few percent at most. Microdiamond powder has every crystal orientation at once, so expect a broad dip of around 1% rather than sharp lines.
+
+
+SlightlyCutGem detects the electron spin resonance of nitrogen-vacancy (NV) centers in diamond, using optically detected magnetic resonance (ODMR). Shine green light on NV diamond and it glows red. Sweep a microwave frequency past 2.87 GHz and the glow dims slightly at resonance. Bring a magnet close and that dip splits in two. 
+
+The original Uncut Gem runs on an ESP32 with a custom PCB. SlightlyCutGem keeps the same physics and the same RF modules, but moves the brains to a Raspberry Pi 4:
+
+* **Python, not firmware.** Sweeps, averaging, CSV logging and plotting all happen in one script.
+* **A 16-bit external ADC** in place of the ESP32's 12-bit one, for a clean signal.
+* **Drift cancellation built in.** Every point is measured with the microwaves on and off.
+* **A simulation mode**, so you can run the whole pipeline before buying anything.
+
+> \\\*\\\*Status:\\\*\\\* the software runs end to end in simulation, and the synthesizer register math is checked against an independent library. Real-hardware bring-up is in progress. Reports, fixes and photos are very welcome.
 
 ## Hardware
 
