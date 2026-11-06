@@ -101,7 +101,7 @@ The original Uncut Gem runs on an ESP32 with a custom PCB. SlightlyCutGem keeps 
 |Photodiode|Vishay BPW34||Needed|
 |Light source|Bright green 5 mm LED, about 525 nm (e.g. Cree C503B-GCN-CY0C0791) plus 100 Ω resistor|A green laser module also works and gives a bigger signal|Needed|
 |Red filter|Red lighting gel (e.g. LEE 106 Primary Red)|Blocks the green, passes the red fluorescence|Needed|
-|NV diamond|Microdiamond with NV centers (e.g. Adámas Nanotechnologies low-nitrogen NV microdiamond)|The hard part to source; see below|Needed|
+|NV diamond|Microdiamond with NV centers |[ENMDNV800](https://www.adamasnano.com/single-particle-sensors)|Needed|
 |Passives|10 MΩ, 1 MΩ, 10 kΩ resistors; 10 pF and 100 nF ceramic capacitors||Needed|
 |Misc|Perfboard, DIP-8 socket, jumper wires, enameled copper wire (about 24 AWG), clear 2-part epoxy|Needed|
 
