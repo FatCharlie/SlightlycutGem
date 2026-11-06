@@ -92,16 +92,16 @@ The original Uncut Gem runs on an ESP32 with a custom PCB. SlightlyCutGem keeps 
 
 |Item|Part|Notes|Status|
 |-|-|-|-|
-|Computer|Raspberry Pi 4 Model B and official 5.1 V / 3 A supply|Other Pis with SPI and I2C should work; untested|Bought|
-|Microwave synthesizer|"35M-4.4GHz ADF4351 development board"|The **bare** board with a control header and 25 MHz reference, not versions with an STM32 controller or touchscreen|Bought|
-|RF amplifier|30 to 4000 MHz, 40 dB broadband amplifier board, 5 V|The same type the original Uncut Gem V1 used|Bought|
-|RF cabling|SMA male-male cable (10 to 15 cm); SMA male to bare-wire pigtail|Pigtail carries the antenna loop|Needed|
-|ADC|ADS1115 module (Adafruit 1085 or generic)|16-bit, I2C|Needed|
-|Op-amp|Microchip MCP6002-I/P (DIP-8)|Rail-to-rail, runs on 3.3 V|Needed|
+|Computer|Raspberry Pi 4 Model B and official 5.1 V / 3 A supply|Other Pis with SPI and I2C should work; untested|Rcvd|
+|Microwave synthesizer|"35M-4.4GHz ADF4351 development board"|The **bare** board with a control header and 25 MHz reference, not versions with an STM32 controller or touchscreen|Rcvd|
+|RF amplifier|30 to 4000 MHz, 40 dB broadband amplifier board, 5 V|The same type the original Uncut Gem V1 used|Rcvd|
+|RF cabling|SMA male-male cable (10 to 15 cm); SMA male to bare-wire pigtail|Pigtail carries the antenna loop|Rcvd|
+|ADC|ADS1115 module (Adafruit 1085 or generic)|16-bit, I2C|Purchased|
+|Op-amp|Microchip MCP6002-I/P (DIP-8)|Rail-to-rail, runs on 3.3 V|Purchased|
 |Photodiode|Vishay BPW34||Needed|
 |Light source|Bright green 5 mm LED, about 525 nm (e.g. Cree C503B-GCN-CY0C0791) plus 100 Ω resistor|A green laser module also works and gives a bigger signal|Needed|
 |Red filter|Red lighting gel (e.g. LEE 106 Primary Red)|Blocks the green, passes the red fluorescence|Needed|
-|NV diamond|Microdiamond with NV centers |[ENMDNV800](https://www.adamasnano.com/single-particle-sensors)|Needed|
+|NV diamond|Microdiamond with NV centers |[ENMDNV800](https://www.adamasnano.com/single-particle-sensors)|Purchased|
 |Passives|10 MΩ, 1 MΩ, 10 kΩ resistors; 10 pF and 100 nF ceramic capacitors||Needed|
 |Misc|Perfboard, DIP-8 socket, jumper wires, enameled copper wire (about 24 AWG), clear 2-part epoxy|Needed|
 
