@@ -2,7 +2,7 @@
 
 ### Current Stage: 0 - all parts ordered and waiting on deliveries
 
-**A Raspberry Pi port of the amazing [**Quantum Village's Uncut Gem**](https://github.com/QuantumVillage/UncutGem)**
+**A Raspberry Pi port of the amazing [**Quantum Village's Uncut Gem**](https://github.com/QuantumVillage/UncutGem)**. This is aimed as a learning resource to understand the entire pipeline before building the PCB for UncutGem.
 
 ## Here’s the whole build
 
