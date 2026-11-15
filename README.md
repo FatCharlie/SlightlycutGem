@@ -155,6 +155,7 @@ Follow the original project's [DiamondMount notes](https://github.com/QuantumVil
 ## Software
 
 ```
+RPI4b_SETUP.sh one-time Pi setup: SPI, I2C, packages (run with sudo)
 check_hw.py    hardware check: tests every part and shows what's ready
 sweep.py       runs ODMR sweeps, writes CSV, finds dips, optional PNG plot
 selftest.py    checks the software with no hardware attached (fake SPI/GPIO/I2C)
@@ -171,12 +172,14 @@ No Adafruit/Blinka dependency and no test framework: everything is a plain `pyth
 
 ### Setup (Raspberry Pi OS Bookworm)
 
+From the repo folder:
+
 ```bash
-sudo raspi-config nonint do_spi 0
-sudo raspi-config nonint do_i2c 0
-sudo apt install -y python3-spidev python3-smbus2 python3-gpiozero python3-lgpio python3-matplotlib python3-rich i2c-tools
+sudo ./RPI4b_SETUP.sh
 sudo reboot
 ```
+
+`RPI4b_SETUP.sh` turns on SPI and I2C with `raspi-config`, installs the apt packages (spidev, smbus2, gpiozero, lgpio, matplotlib, rich, i2c-tools, git), and adds your user to the spi, i2c and gpio groups. It has to run as root; without `sudo` it stops with "You need to run as root for raspi-config".
 
 Then, from the repo folder:
 
