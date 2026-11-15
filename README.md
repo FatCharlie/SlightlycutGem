@@ -58,7 +58,7 @@ Think of it as two loops that meet at the diamond: a microwave path that pokes t
                     └────────────────┘
 ```
 
-\---
+---
 
 ## How it works
 
@@ -72,7 +72,7 @@ An NV center is a defect in diamond: a nitrogen atom next to a missing carbon. I
 
 With no magnet, both transitions sit at 2.87 GHz: one dip. With a field, they split by 2γB∥: two dips. Example: 3 mT gives dips at 2870 ± 84 MHz.
 
-Green light pumps the spins into the bright m\_s = 0 state. Microwaves at resonance move them into the dimmer m\_s = ±1 states, so the red fluorescence drops by a few percent at most. Microdiamond powder has every crystal orientation at once, so expect a broad dip of around 1% rather than sharp lines.
+Green light pumps the spins into the bright m\_s = 0 state. Microwaves at resonance move them into the dimmer m\_s = ±1 states, so the red fluorescence drops by a few percent at most. A single crystal has its NV centers along just four directions, so a magnet splits the dip into up to four separate pairs, one per direction, each at D ± γB∥ for that direction's share of the field. (Microdiamond powder has every orientation at once and gives one broad, smeared dip instead.)
 
 
 SlightlyCutGem detects the electron spin resonance of nitrogen-vacancy (NV) centers in diamond, using optically detected magnetic resonance (ODMR). Shine green light on NV diamond and it glows red. Sweep a microwave frequency past 2.87 GHz and the glow dims slightly at resonance. Bring a magnet close and that dip splits in two. 
@@ -84,7 +84,7 @@ The original Uncut Gem runs on an ESP32 with a custom PCB. SlightlyCutGem keeps 
 * **Drift cancellation built in.** Every point is measured with the microwaves on and off.
 * **A simulation mode**, so you can run the whole pipeline before buying anything.
 
-> \\\*\\\*Status:\\\*\\\* the software runs end to end in simulation, and the synthesizer register math is checked against an independent library. Real-hardware bring-up is in progress. Reports, fixes and photos are very welcome.
+> **Status:** the software runs end to end in simulation, and the synthesizer register math is checked against an independent library. Real-hardware bring-up is in progress. Reports, fixes and photos are very welcome.
 
 ## Hardware
 
@@ -93,7 +93,7 @@ The original Uncut Gem runs on an ESP32 with a custom PCB. SlightlyCutGem keeps 
 |Item|Part|Notes|Status|
 |-|-|-|-|
 |Computer|Raspberry Pi 4 Model B and official 5.1 V / 3 A supply|Other Pis with SPI and I2C should work; untested|Rcvd|
-|Microwave synthesizer|"35M-4.4GHz ADF4351 development board"|The **bare** board with a control header and 25 MHz reference, not versions with an STM32 controller or touchscreen|Rcvd|
+|Microwave synthesizer|"ADF435X EVAL Board" clone (ADF4351 with a CY7C68013A USB chip, 25 MHz reference, OUT+/OUT− SMA, barrel jack)|Pull the three P3 jumpers and drive it from the Pi through header P2. Avoid versions with an STM32 controller or touchscreen|Rcvd|
 |RF amplifier|30 to 4000 MHz, 40 dB broadband amplifier board, 5 V|The same type the original Uncut Gem V1 used|Rcvd|
 |RF cabling|SMA male-male cable (10 to 15 cm); SMA male to bare-wire pigtail|Pigtail carries the antenna loop|Rcvd|
 |ADC|ADS1115 module (Adafruit 1085 or generic)|16-bit, I2C|Purchased|
@@ -110,11 +110,12 @@ The original Uncut Gem runs on an ESP32 with a custom PCB. SlightlyCutGem keeps 
 
 ### Wiring
 
-Pi pins are physical header numbers. ADF4351 boards differ in header order between versions, so wire by the silkscreen labels.
+Pi pins are physical header numbers; the same assignments live in code in `gem/config.py`. Wire the synth by the silkscreen labels on its 10-pin header P2 (LE, CLK, DAT, GD, 3V3 on one row; MUX, LD, PDR, CE, GD on the other). Before wiring, pull the three green jumpers on header P3: they connect the board's own USB chip to the same control lines. Leave P2's 3V3, MUX and PDR unconnected.
 
 |From|To|Notes|
 |-|-|-|
-|Pi pin 2 (5 V)|ADF4351 board 5 V, amp board 5 V|About 280 mA together|
+|Pi USB port|ADF4351 board barrel jack|The included USB-to-barrel cable; about 110 to 145 mA|
+|Pi pin 2 (5 V)|Amp board 5 V|About 135 mA|
 |Pi pin 4 (5 V)|LED anode|LED cathode → 100 Ω → GND|
 |Pi pin 6 (GND)|All grounds|One common ground|
 |Pi pin 19 (GPIO10, MOSI)|ADF4351 DATA||
@@ -125,8 +126,9 @@ Pi pins are physical header numbers. ADF4351 boards differ in header order betwe
 |Pi pin 1 (3.3 V)|ADS1115 VDD, op-amp pin 8|Leave the ADF4351 board's own 3.3 V pin unconnected|
 |Pi pin 3 (GPIO2, SDA)|ADS1115 SDA||
 |Pi pin 5 (GPIO3, SCL)|ADS1115 SCL|ADS1115 ADDR to GND (address 0x48)|
-|ADF4351 RF out|Amp IN|SMA cable|
-|Amp OUT|Antenna pigtail|Small enameled-wire loop right beside the diamond|
+|ADF4351 OUT+|Amp IN|Short SMA male-male cable|
+|ADF4351 OUT−|50 Ω SMA terminator|Never put the terminator on the amp output|
+|Amp OUT|Antenna pigtail|RG316 pigtail: cut off any bare-wire leads and bend the coax's centre conductor into a 2 to 3 mm loop soldered to the braid; lay it flat against the diamond|
 
 The SPI chip-select (CE0) doubles as the ADF4351's load-enable line. spidev holds it low while shifting each 32-bit word and raises it afterward, which latches the word into the register its control bits select.
 
@@ -147,39 +149,69 @@ One transimpedance stage on a single 3.3 V supply, photodiode at zero bias. MCP6
 
 Follow the original project's [DiamondMount notes](https://github.com/QuantumVillage/UncutGem/tree/main/hardware/DiamondMount). Embed the diamond in clear epoxy directly on the photodiode, with red gel between them. Diamond sinks in most epoxies, so build it up in layers. Hold the LED on stiff enameled wire so you can aim it at the diamond.
 
-\---
+---
 
 ## Software
 
-Three small Python files, no Adafruit/Blinka dependency:
+```
+setup.py       hardware check: tests every part and shows what's ready
+sweep.py       runs ODMR sweeps, writes CSV, finds dips, optional PNG plot
+selftest.py    checks the software with no hardware attached (fake SPI/GPIO/I2C)
+gem/
+  config.py    every pin, address and constant, in one place
+  adf4351.py   synthesizer register math and SPI driver
+  ads1115.py   16-bit ADC on I2C, with auto-ranging
+  hardware.py  the real rig and a simulated one behind the same interface
+  odmr.py      the sweep loop, dip finder, CSV and plot
+  report.py    terminal tables (rich if installed, plain text if not)
+```
 
-* `adf4351.py`: ADF4351 register math and SPI driver (25 MHz reference, 10 kHz channel grid). Register words match the open-source [adf435x](https://github.com/Ho-Ro/adf435x) library at 5,049 test frequencies; the only deliberate difference is the lock-detect timing bits, set per the ADF4351 datasheet.
-* `ads1115.py`: minimal ADS1115 reader with auto-ranging.
-* `sweep.py`: runs sweeps, averages, writes CSV, and optionally saves a PNG plot.
+No Adafruit/Blinka dependency and no test framework: everything is a plain `python3 <script>.py`. The ADF4351 register words match the open-source [adf435x](https://github.com/Ho-Ro/adf435x) library at 5,049 test frequencies; the only deliberate difference is the lock-detect timing bits, set per the ADF4351 datasheet.
 
 ### Setup (Raspberry Pi OS Bookworm)
 
 ```bash
-sudo raspi-config nonint do\\\_spi 0
-sudo raspi-config nonint do\\\_i2c 0
-sudo apt install -y python3-spidev python3-smbus2 python3-gpiozero python3-lgpio python3-matplotlib i2c-tools
+sudo raspi-config nonint do_spi 0
+sudo raspi-config nonint do_i2c 0
+sudo apt install -y python3-spidev python3-smbus2 python3-gpiozero python3-lgpio python3-matplotlib python3-rich i2c-tools
+sudo reboot
 ```
 
-Try it with no hardware connected:
+Then, from the repo folder:
 
 ```bash
+python3 selftest.py                              # software check, no hardware needed
 python3 sweep.py --sim --plot                    # one dip at 2870 MHz
-python3 sweep.py --sim --sim-field 3 --plot      # two dips, 2870 ± 84 MHz
+python3 sweep.py --sim --sim-field 3 --plot      # four dips: 2870 ± 84 and 2870 ± 28 MHz
 ```
+
+### Hardware check
+
+`setup.py` tests each part and prints a table of what's ready, with the fix for anything that isn't, then a summary of which bring-up steps you can do now.
+
+```bash
+python3 setup.py                     # everything
+python3 setup.py --only adf4351      # just the synthesizer (also: pi, packages, adc, manual)
+python3 setup.py --interactive       # adds a cover-the-photodiode test
+python3 setup.py --have amp,loop,led # parts you've fitted that nothing can detect
+```
+
+* **Pi:** board, Python version, SPI and I2C enabled, packages installed (with one `apt` line for anything missing).
+* **ADS1115:** probes all four addresses its ADDR pin can select, so a wrong ADDR is called out, then reads A0 and flags dark or saturated.
+* **ADF4351:** SPI is write-only on this chip, so the evidence is the lock-detect pin. The check programs 2614, 2870 and 3126 MHz and requires LD to go high at each, then pulls CE low and requires LD to drop. That second step proves LD really comes from the chip and isn't floating high or tied to 3.3 V. The RF output stays off the whole time.
+* **RF amp, loop, terminator, LED, diamond:** no digital interface, so they can't be detected. List the fitted ones with `--have`; the summary then knows what you're still waiting on.
+
+It exits non-zero if anything failed, so it can gate other scripts.
 
 ### Running
 
 ```bash
-i2cdetect -y 1                                   # ADS1115 should appear at 0x48
 python3 sweep.py --sweeps 10 --plot              # 2614 to 3126 MHz, 4 MHz steps
 python3 sweep.py --start 2820 --stop 2920 --step 0.5 --sweeps 20 --plot
 python3 sweep.py --sweeps 10 --temp 21 --note "magnet 2 cm away" --plot
 ```
+
+Ctrl-C stops early and still saves the sweeps that finished. After each run the script lists the dips it found and, if there are at least two, the field along the most-aligned NV axis.
 
 Key options:
 
@@ -192,7 +224,7 @@ Key options:
 |`--no-ref`|off|Skip the microwave-off reading (faster, more drift)|
 |`--temp`, `--note`|none|Logged in the CSV header|
 |`--plot`|off|Save a PNG next to the CSV|
-|`--sim`, `--sim-field`|off, 0|Simulated hardware; field in mT|
+|`--sim`, `--sim-field`|off, 0|Simulated single crystal; field in mT along one NV axis|
 
 ### Reading the output
 
@@ -204,27 +236,30 @@ Each frequency is measured with the microwaves on and off, and reported as contr
 * **V\_off:** the same measurement with microwaves off, taken moments later.
 * **C:** fractional change; a resonance shows as a negative dip.
 
-Dividing by V\_off cancels slow changes in LED brightness and temperature, a cheap version of what a lock-in amplifier does. The CSV has one row per frequency (`freq\\\_MHz, V\\\_on, V\\\_off, contrast`), plus a header line with the run settings.
+Dividing by V\_off cancels slow changes in LED brightness and temperature, a cheap version of what a lock-in amplifier does. The CSV has one row per frequency (`freq_MHz, V_on, V_off, contrast`), plus a header line with the run settings.
 
 To turn dip positions into a field, use the formula from earlier: B∥ = (f₊ − f₋) / (2 × 28 MHz/mT). Temperature also shifts D by about −74 kHz per kelvin, so log it.
 
-\---
+---
 
 ## Bring-up checklist
 
-1. `sweep.py --sim --plot` works on your Pi.
-2. Photodiode amp: near 0 V with the photodiode covered, rising in room light.
-3. `i2cdetect -y 1` shows 0x48, and the reading changes when you shade the photodiode.
-4. The ADF4351 lock-detect line reads high at 2614, 2870 and 3126 MHz.
+`setup.py` checks steps 2 to 4 for you.
+
+1. `python3 selftest.py` and `python3 sweep.py --sim --plot` work on your Pi.
+2. `python3 setup.py --only pi --only packages` is all green.
+3. `python3 setup.py --only adc --interactive`: the ADS1115 answers at 0x48 and the reading drops when you cover the photodiode.
+4. `python3 setup.py --only adf4351`: the synth locks at 2614, 2870 and 3126 MHz, and LD drops when it's powered down.
 5. The LED makes the diamond glow red through red film.
 6. First sweep in a dim room shows a dip near 2870 MHz.
-7. A small magnet widens or splits the dip, and it recovers when the magnet is removed.
+7. A small magnet splits the dip into pairs, and it recovers when the magnet is removed.
 8. Blocking the light makes the dip vanish. This proves you're seeing fluorescence, not electrical pickup.
 
 ## Troubleshooting
 
 * **Nothing at 0x48:** check SDA/SCL, 3.3 V, ADDR to GND, and that I2C is enabled.
-* **"PLL reported unlocked":** check CE is high, the LE pull-down, 5 V at the synth board, and that DATA and CLK aren't swapped. Confirm you have the bare board with a 25 MHz reference.
+* **"PLL reported unlocked" or `setup.py` says no lock:** check the barrel power, that the three P3 jumpers are out, the LE pull-down, and that DATA and CLK aren't swapped.
+* **`setup.py` says LD is stuck high:** the LD wire is on the wrong header pin (3V3 or MUX).
 * **Reading stuck near 3.3 V:** the photodiode amp is saturated; use 1 MΩ feedback or shade stray light.
 * **Reading stuck near 0 V:** photodiode reversed or not lit; the cathode goes to op-amp pin 2.
 * **No dip:** check the amp has power, the SMA joints are tight and the loop is close. Then narrow the sweep and add more sweeps.
@@ -236,7 +271,7 @@ To turn dip positions into a field, use the formula from earlier: B∥ = (f₊ �
 * Neodymium magnets pinch, chip, and wipe cards.
 * Power down before rewiring anything on the Pi header.
 
-\---
+---
 
 ## Credits
 
