@@ -1,6 +1,5 @@
 # SlightlyCutGem
 
-#### *WARNING: Still largely AI Generated, and as of yet unbuilt - will update here with progress*
 ### Current Stage: 0 - all parts ordered and waiting on deliveries
 
 **A Raspberry Pi port of the amazing [**Quantum Village's Uncut Gem**](https://github.com/QuantumVillage/UncutGem)**
