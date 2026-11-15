@@ -9,54 +9,41 @@
 Think of it as two loops that meet at the diamond: a microwave path that pokes the spins, and an optical path that watches them.
 
 ```text
-                        ┌────────────────────────────┐
-                        │      Raspberry Pi 4        │
-                        │  (runs sweep.py)           │
-                        └──┬──────┬──────┬───────┬───┘
-                   USB port│   SPI │  I2C │  5 V  │ 3.3 V
-          (USB-to-barrel)  │  pins │ pins │ pins  │ pin 1
-                           │ 19,23,│  3,5 │  2,4  │
-                           │ 24,22,│      │       │
-                           │  18   │      │       │
-                           ▼       ▼      │       │
-                  ┌─────────────────┐     │       │
-                  │ ADF4351 synth   │     │       │
-                  │ (EVAL board)    │     │       │
-                  │ 2.6 to 3.1 GHz  │     │       │
-                  └────────┬────────┘     │       │
-                    OUT+ SMA│             │       │
-                           ▼              │       │
-                  ┌─────────────────┐     │       │
-                  │  RF amplifier   │◄────┼───5 V─┤ (pin 2)
-                  │  ~+20 dBm max   │     │       │
-                  └────────┬────────┘     │       │
-                     SMA pigtail          │       │
-                           ▼              │       │
-     MICROWAVES ═══►  ( wire loop )       │       │
-                    ┌────────────────┐    │       │
-     GREEN LED ───► │  polymer block │    │       │
-     (pin 4 + 100Ω) │     diamond    │    │       │
-     527 nm         │     crystal    │    │       │
-                    └───────┬────────┘    │       │
-                     red glow (637-800 nm)│       │
-                    ░░░ red gel ░░░       │       │
-                     (blocks green)       │       │
-                    ┌───────▼────────┐    │       │
-                    │ BPW34          │    │       │
-                    │ photodiode     │    │       │
-                    └───────┬────────┘    │       │
-                     tiny current (nA)    │       │
-                    ┌───────▼────────┐    │       │
-                    │ MCP6002 op-amp │◄───┼──3.3 V┘
-                    │ (perfboard)    │    │
-                    │ current→voltage│    │
-                    └───────┬────────┘    │
-                     voltage 0 to 3.3 V   │
-                    ┌───────▼────────┐    │
-                    │ ADS1115 ADC    │────┘  (I2C back to Pi)
-                    │ 16-bit         │
-                    └────────────────┘
+                    ┌────────────────────────────────┐
+                    │     Raspberry Pi 4 Model B     │
+                    │        (runs sweep.py)         │
+                    └──┬──────────┬───────────────▲──┘
+       SPI + CE + LD   │          │ 5 V (pins 2,4)│  I2C (SDA/SCL)
+       via header P2   │          │ + USB barrel  │
+                       ▼          │               │
+   ┌───────────────────────┐      │      ┌────────┴────────┐
+   │ ADF4351 EVAL synth    │◄─────┤      │ ADS1115 ADC     │
+   │ sweeps 2614-3126 MHz  │      │      │ 16-bit, 0x48    │
+   └──┬─────────────────┬──┘      │      └────────▲────────┘
+  OUT+│             OUT−│         │               │ A0 (volts)
+      │          50 Ω terminator  │      ┌────────┴────────┐
+      │ 15 cm SMA jumper          │      │ MCP6002 op-amp  │
+      ▼                           │      │ 10 MΩ ∥ 10 pF   │
+   ┌───────────────────────┐      │      └────────▲────────┘
+   │ 40 dB RF amp          │◄─────┘               │ photocurrent
+   │ about +20 dBm out     │             ┌────────┴────────┐
+   └──────────┬────────────┘             │ BPW34 photodiode│
+              │ RG316 pigtail            └────────▲────────┘
+              ▼                                   │ red only
+        2-3 mm wire loop                 ┌────────┴────────┐
+              │ microwaves               │ LEE 106 red gel │
+              ▼                          └────────▲────────┘
+   ┌───────────────────────────────────┐          │ red glow
+   │  ENMDNV800 diamond block          ├──────────┘
+   │  dims at the 2.87 GHz resonance   │
+   └───────────────────────────────────┘
+              ▲ green light
+   ┌──────────┴────────────┐
+   │ green LED + 100 Ω     │  5 V from Pi pin 4
+   └───────────────────────┘
 ```
+
+Left column: the microwave chain, from the Pi down to the diamond. Right column: the light readout, from the diamond back up to the Pi.
 
 ---
 
