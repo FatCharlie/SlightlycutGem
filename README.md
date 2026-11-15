@@ -111,11 +111,12 @@ Status: **Rcvd** = in hand, **Purchased** = ordered and on the way, **Needed** =
 |Resistors|100 Ω, 10 kΩ, 100 kΩ, 1 MΩ, 10 MΩ, ¼ W through-hole|LED; LE pull-down; and the photodiode amp feedback (10 MΩ, with 1 MΩ and 100 kΩ as fallbacks if it saturates)|Purchased|
 |Breadboard and wiring|830-point solderless breadboard; Dupont jumper kit (M-M, M-F, F-F, 20 cm); GPIO T-Cobbler with 40-pin ribbon|See [for_dummies.md](for_dummies.md). Perfboard and a DIP-8 socket only for a later permanent build|Purchased|
 |Tools|Multimeter, soldering iron, wire strippers, flush cutters, craft knife, heat-shrink|For the antenna loop and checks during assembly|Needed|
-|Magnet|Small neodymium disc, about 6 to 10 mm|For the magnet test: splits the dip into pairs. Field falls off as about 1/distance³, so distance sets the splitting|Needed|
-|ESD wrist strap|Antistatic wrist strap with coiled cord and clip|The MCP6002 and ADF4351 are static-sensitive; dry winter air makes it worse. Clip to a grounded point; no mat needed|Needed|
+|Magnet|Small neodymium disc, about 6 to 10 mm|For the magnet test: splits the dip into pairs. Field falls off as about 1/distance³, so distance sets the splitting|Purchased|
+|ESD wrist strap|Antistatic wrist strap with coiled cord and clip|The MCP6002 and ADF4351 are static-sensitive; dry winter air makes it worse. Clip to a grounded point; no mat needed|Purchased|
+|Helping hands|Clamp stand with alligator clips|Holds the LED or laser aimed at the crystal, and the coax while soldering the loop|Purchased|
 |Optional|Clear 2-part epoxy|Fixes the block, gel and photodiode once everything works; Blu Tack or tape until then|Needed|
 
-**Still to buy:** a magnet and an ESD wrist strap; helping hands are optional.
+**Still to buy:** nothing. Everything for the first build is ordered or in hand.
 
 **On the diamond:** you need diamond with a meaningful concentration of NV centers; ordinary gem or industrial diamond won't do. Fluorescent NV microdiamond from a specialist supplier is the practical route. If you find a cheaper or hobby-friendly source, please open an issue.
 
