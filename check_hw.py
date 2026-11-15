@@ -1,10 +1,10 @@
 #!/usr/bin/env python3
 """Hardware check: tests every part of the rig and shows what's ready.
 
-    python3 setup.py                     check everything that can be checked
-    python3 setup.py --only adf4351      just the synthesizer (repeatable)
-    python3 setup.py --interactive       adds a cover-the-photodiode test
-    python3 setup.py --have amp,led      parts you've fitted that can't be detected
+    python3 check_hw.py                     check everything that can be checked
+    python3 check_hw.py --only adf4351      just the synthesizer (repeatable)
+    python3 check_hw.py --interactive       adds a cover-the-photodiode test
+    python3 check_hw.py --have amp,led      parts you've fitted that can't be detected
 
 The synthesizer test never turns the RF output on; the PLL locks with the
 output stage off, so it's safe with nothing on the SMA ports.
@@ -13,8 +13,6 @@ The RF amp, antenna loop, terminator, LED and diamond have no digital
 interface, so nothing can detect them. List the ones you've fitted with
 --have; the rest show as NOT FITTED, and the summary says what's still
 needed for each bring-up step.
-
-(This is a plain script, not a setuptools file.)
 """
 import argparse
 import importlib

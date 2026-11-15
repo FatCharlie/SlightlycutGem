@@ -154,7 +154,7 @@ Follow the original project's [DiamondMount notes](https://github.com/QuantumVil
 ## Software
 
 ```
-setup.py       hardware check: tests every part and shows what's ready
+check_hw.py    hardware check: tests every part and shows what's ready
 sweep.py       runs ODMR sweeps, writes CSV, finds dips, optional PNG plot
 selftest.py    checks the software with no hardware attached (fake SPI/GPIO/I2C)
 gem/
@@ -187,13 +187,13 @@ python3 sweep.py --sim --sim-field 3 --plot      # four dips: 2870 ± 84 and 287
 
 ### Hardware check
 
-`setup.py` tests each part and prints a table of what's ready, with the fix for anything that isn't, then a summary of which bring-up steps you can do now.
+`check_hw.py` tests each part and prints a table of what's ready, with the fix for anything that isn't, then a summary of which bring-up steps you can do now.
 
 ```bash
-python3 setup.py                     # everything
-python3 setup.py --only adf4351      # just the synthesizer (also: pi, packages, adc, manual)
-python3 setup.py --interactive       # adds a cover-the-photodiode test
-python3 setup.py --have amp,loop,led # parts you've fitted that nothing can detect
+python3 check_hw.py                     # everything
+python3 check_hw.py --only adf4351      # just the synthesizer (also: pi, packages, adc, manual)
+python3 check_hw.py --interactive       # adds a cover-the-photodiode test
+python3 check_hw.py --have amp,loop,led # parts you've fitted that nothing can detect
 ```
 
 * **Pi:** board, Python version, SPI and I2C enabled, packages installed (with one `apt` line for anything missing).
@@ -244,12 +244,12 @@ To turn dip positions into a field, use the formula from earlier: B∥ = (f₊ �
 
 ## Bring-up checklist
 
-`setup.py` checks steps 2 to 4 for you.
+`check_hw.py` checks steps 2 to 4 for you.
 
 1. `python3 selftest.py` and `python3 sweep.py --sim --plot` work on your Pi.
-2. `python3 setup.py --only pi --only packages` is all green.
-3. `python3 setup.py --only adc --interactive`: the ADS1115 answers at 0x48 and the reading drops when you cover the photodiode.
-4. `python3 setup.py --only adf4351`: the synth locks at 2614, 2870 and 3126 MHz, and LD drops when it's powered down.
+2. `python3 check_hw.py --only pi --only packages` is all green.
+3. `python3 check_hw.py --only adc --interactive`: the ADS1115 answers at 0x48 and the reading drops when you cover the photodiode.
+4. `python3 check_hw.py --only adf4351`: the synth locks at 2614, 2870 and 3126 MHz, and LD drops when it's powered down.
 5. The LED makes the diamond glow red through red film.
 6. First sweep in a dim room shows a dip near 2870 MHz.
 7. A small magnet splits the dip into pairs, and it recovers when the magnet is removed.
@@ -258,8 +258,8 @@ To turn dip positions into a field, use the formula from earlier: B∥ = (f₊ �
 ## Troubleshooting
 
 * **Nothing at 0x48:** check SDA/SCL, 3.3 V, ADDR to GND, and that I2C is enabled.
-* **"PLL reported unlocked" or `setup.py` says no lock:** check the barrel power, that the three P3 jumpers are out, the LE pull-down, and that DATA and CLK aren't swapped.
-* **`setup.py` says LD is stuck high:** the LD wire is on the wrong header pin (3V3 or MUX).
+* **"PLL reported unlocked" or `check_hw.py` says no lock:** check the barrel power, that the three P3 jumpers are out, the LE pull-down, and that DATA and CLK aren't swapped.
+* **`check_hw.py` says LD is stuck high:** the LD wire is on the wrong header pin (3V3 or MUX).
 * **Reading stuck near 3.3 V:** the photodiode amp is saturated; use 1 MΩ feedback or shade stray light.
 * **Reading stuck near 0 V:** photodiode reversed or not lit; the cathode goes to op-amp pin 2.
 * **No dip:** check the amp has power, the SMA joints are tight and the loop is close. Then narrow the sweep and add more sweeps.

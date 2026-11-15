@@ -5,7 +5,7 @@
     python3 selftest.py synth    run only tests whose name contains "synth"
 
 Runs anywhere (the Pi, a laptop). Fake SPI, GPIO and I2C stand in for the
-real parts, and act out wiring faults so we can check that setup.py's
+real parts, and act out wiring faults so we can check that check_hw.py's
 diagnosis is right. Plain Python: each test is a function that raises
 AssertionError on failure. Add one by writing a function and listing it in
 TESTS at the bottom.
@@ -221,13 +221,13 @@ def test_synth_driver_rf_toggle_touches_only_r4_bit5():
 
 
 # =============================================================================
-# setup.py's synthesizer diagnosis
+# check_hw.py's synthesizer diagnosis
 # =============================================================================
 
 def _synth_check(mode):
-    import setup
+    import check_hw
     with fake_pi(FakeSynthBoard(mode)) as (board, _):
-        checks = {c.name: c for c in setup.check_synth()}
+        checks = {c.name: c for c in check_hw.check_synth()}
     return checks, board
 
 
@@ -288,18 +288,18 @@ def test_adc_reads_and_autoranges():
 
 
 def test_check_adc_wrong_address_is_explained():
-    import setup
+    import check_hw
     from gem.report import FAIL
     with fake_pi(bus=FakeI2CBus(addr=0x49)):
-        c = {x.name: x for x in setup.check_adc()}
+        c = {x.name: x for x in check_hw.check_adc()}
     assert c["ADS1115 ADC"].status == FAIL and "ADDR" in c["ADS1115 ADC"].fix
 
 
 def test_check_adc_flags_saturation():
-    import setup
+    import check_hw
     from gem.report import WARN
     with fake_pi(bus=FakeI2CBus(volts=3.29)):
-        c = {x.name: x for x in setup.check_adc()}
+        c = {x.name: x for x in check_hw.check_adc()}
     assert c["Photodiode amp (A0)"].status == WARN and "saturated" in c["Photodiode amp (A0)"].detail
 
 
@@ -367,14 +367,14 @@ def test_sweep_script_end_to_end():
 
 
 # =============================================================================
-# setup.py's summary
+# check_hw.py's summary
 # =============================================================================
 
 def test_readiness_without_amp():
-    import setup
+    import check_hw
     from gem.report import READY, Check
     checks = [Check("Readout", "ADS1115 ADC", READY), Check("Synthesizer", "ADF4351 lock", READY)]
-    steps = {name: (ok, why) for name, ok, why in setup.readiness(checks, {"led"})}
+    steps = {name: (ok, why) for name, ok, why in check_hw.readiness(checks, {"led"})}
     assert steps["Synthesizer locks"][0]
     assert not steps["RF chain to the diamond"][0]
     assert "amp" in steps["RF chain to the diamond"][1]
@@ -382,10 +382,10 @@ def test_readiness_without_amp():
 
 
 def test_readiness_everything_fitted():
-    import setup
+    import check_hw
     from gem.report import READY, Check
     checks = [Check("Readout", "ADS1115 ADC", READY), Check("Synthesizer", "ADF4351 lock", READY)]
-    steps = setup.readiness(checks, {"amp", "loop", "led", "diamond"})
+    steps = check_hw.readiness(checks, {"amp", "loop", "led", "diamond"})
     assert all(ok for _, ok, _ in steps)
 
 

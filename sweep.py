@@ -46,7 +46,7 @@ def main(argv=None):
         rig = open_rig(a.sim, a.sim_field, a.power, a.settle_ms)
     except Exception as e:  # noqa: BLE001
         report.say(f"Couldn't open the hardware: {e}", "bold red")
-        report.say("Run  python3 setup.py  to see which part is missing.", "yellow")
+        report.say("Run  python3 check_hw.py  to see which part is missing.", "yellow")
         return 1
 
     try:
