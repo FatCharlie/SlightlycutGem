@@ -71,8 +71,6 @@ The original Uncut Gem runs on an ESP32 with a custom PCB. SlightlyCutGem keeps 
 * **Drift cancellation built in.** Every point is measured with the microwaves on and off.
 * **A simulation mode**, so you can run the whole pipeline before buying anything.
 
-> **Status:** the software runs end to end in simulation, and the synthesizer register math is checked against an independent library. Real-hardware bring-up is in progress. Reports, fixes and photos are very welcome.
-
 ## Hardware
 
 ### Parts
@@ -102,10 +100,6 @@ Status: **Rcvd** = in hand, **Purchased** = ordered and on the way, **Needed** =
 |ESD wrist strap|Antistatic wrist strap with coiled cord and clip|The MCP6002 and ADF4351 are static-sensitive; dry winter air makes it worse. Clip to a grounded point; no mat needed|Purchased|
 |Helping hands|Clamp stand with alligator clips|Holds the LED or laser aimed at the crystal, and the coax while soldering the loop|Purchased|
 |Optional|Clear 2-part epoxy|Fixes the block, gel and photodiode once everything works; Blu Tack or tape until then|Needed|
-
-**Still to buy:** nothing, apart from any tools you don't already own. Everything else for the first build is ordered or in hand.
-
-**On the diamond:** you need diamond with a meaningful concentration of NV centers; ordinary gem or industrial diamond won't do. Fluorescent NV microdiamond from a specialist supplier is the practical route. If you find a cheaper or hobby-friendly source, please open an issue.
 
 ### Wiring
 
