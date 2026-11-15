@@ -116,7 +116,7 @@ Status: **Rcvd** = in hand, **Purchased** = ordered and on the way, **Needed** =
 |Helping hands|Clamp stand with alligator clips|Holds the LED or laser aimed at the crystal, and the coax while soldering the loop|Purchased|
 |Optional|Clear 2-part epoxy|Fixes the block, gel and photodiode once everything works; Blu Tack or tape until then|Needed|
 
-**Still to buy:** nothing. Everything for the first build is ordered or in hand.
+**Still to buy:** nothing, apart from any tools you don't already own. Everything else for the first build is ordered or in hand.
 
 **On the diamond:** you need diamond with a meaningful concentration of NV centers; ordinary gem or industrial diamond won't do. Fluorescent NV microdiamond from a specialist supplier is the practical route. If you find a cheaper or hobby-friendly source, please open an issue.
 
