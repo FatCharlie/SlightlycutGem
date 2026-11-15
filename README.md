@@ -109,14 +109,13 @@ Status: **Rcvd** = in hand, **Purchased** = ordered and on the way, **Needed** =
 |NV diamond|Adámas [ENMDNV800](https://www.adamasnano.com/single-particle-sensors): 800 µm NV crystal in a 12.5 × 12.5 × 7 mm clear block|Single crystal, so a magnet gives separate dip pairs|Purchased|
 |Capacitors|KEMET C315C100J5G5TA (10 pF C0G, 50 V, radial; or Vishay K100J15C0GF5TL2) and C320C104K5R5TA (100 nF X7R, radial)|Through-hole; surface-mount sizes (0402, 0603) won't fit a breadboard|Purchased|
 |Resistors|100 Ω, 10 kΩ, 100 kΩ, 1 MΩ, 10 MΩ, ¼ W through-hole|LED; LE pull-down; and the photodiode amp feedback (10 MΩ, with 1 MΩ and 100 kΩ as fallbacks if it saturates)|Purchased|
-|Breadboard and wiring|830-point solderless breadboard; Dupont jumper kit (M-M, M-F, F-F, 20 cm); GPIO T-Cobbler with 40-pin ribbon|See [for_dummies.md](for_dummies.md). Perfboard and a DIP-8 socket only for a later permanent build|Needed|
+|Breadboard and wiring|830-point solderless breadboard; Dupont jumper kit (M-M, M-F, F-F, 20 cm); GPIO T-Cobbler with 40-pin ribbon|See [for_dummies.md](for_dummies.md). Perfboard and a DIP-8 socket only for a later permanent build|Purchased|
 |Tools|Multimeter, soldering iron, wire strippers, flush cutters, craft knife, heat-shrink|For the antenna loop and checks during assembly|Needed|
 |Magnet|Small neodymium disc, about 6 to 10 mm|For the magnet test: splits the dip into pairs. Field falls off as about 1/distance³, so distance sets the splitting|Needed|
 |ESD wrist strap|Antistatic wrist strap with coiled cord and clip|The MCP6002 and ADF4351 are static-sensitive; dry winter air makes it worse. Clip to a grounded point; no mat needed|Needed|
-|Bench supply (optional)|Any adjustable DC supply with current limit|Run the RF amp from it at 5.0 V, 200 mA limit, instead of Pi pin 2; tie its − to the breadboard GND|Rcvd|
 |Optional|Clear 2-part epoxy|Fixes the block, gel and photodiode once everything works; Blu Tack or tape until then|Needed|
 
-**Still to buy:** a magnet, an ESD wrist strap, helping hands (optional), and a breadboard and T-Cobbler if you don't have them.
+**Still to buy:** a magnet and an ESD wrist strap; helping hands are optional.
 
 **On the diamond:** you need diamond with a meaningful concentration of NV centers; ordinary gem or industrial diamond won't do. Fluorescent NV microdiamond from a specialist supplier is the practical route. If you find a cheaper or hobby-friendly source, please open an issue.
 
