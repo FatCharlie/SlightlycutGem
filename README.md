@@ -77,14 +77,14 @@ The original Uncut Gem runs on an ESP32 with a custom PCB. SlightlyCutGem keeps 
 
 ### Parts
 
-Status: **Received** = in hand, **Purchased** = ordered and on the way, **Needed** = still to buy.
+Status: **Rcvd** = in hand, **Purchased** = ordered and on the way, **Needed** = still to buy.
 
 |Item|Part|Notes|Status|
 |-|-|-|-|
-|Computer|Raspberry Pi 4 Model B and official 5.1 V / 3 A supply|Other Pis with SPI and I2C should work; untested|Received|
-|Microwave synthesizer|"ADF435X EVAL Board" clone (ADF4351 with a CY7C68013A USB chip, 25 MHz reference, OUT+/OUT− SMA, barrel jack)|Pull the three P3 jumpers and drive it from the Pi through header P2. Avoid versions with an STM32 controller or touchscreen|Received|
+|Computer|Raspberry Pi 4 Model B and official 5.1 V / 3 A supply|Other Pis with SPI and I2C should work; untested|Rcvd|
+|Microwave synthesizer|"ADF435X EVAL Board" clone (ADF4351 with a CY7C68013A USB chip, 25 MHz reference, OUT+/OUT− SMA, barrel jack)|Pull the three P3 jumpers and drive it from the Pi through header P2. Avoid versions with an STM32 controller or touchscreen|Rcvd|
 |RF amplifier|30 to 4000 MHz, 40 dB broadband amplifier board, 5 V, SMA in and out|The same type the original Uncut Gem V1 used; check it's the 5 V version, not 12 V|Purchased|
-|RF cabling|SMA male-male cable (10 to 15 cm); SMA male to bare-wire pigtail (RG316)|Pigtail carries the antenna loop|Received|
+|RF cabling|SMA male-male cable (10 to 15 cm); SMA male to bare-wire pigtail (RG316)|Pigtail carries the antenna loop|Rcvd|
 |Terminator|SMA **male** 50 Ω terminator, DC to 6 GHz (any power rating)|Caps the synth's unused OUT−; not RP-SMA. Optional, but keeps OUT+ power flat across the sweep|Purchased|
 |ADC|ADS1115 module, pre-soldered header (Adafruit 1085 or generic)|16-bit, I2C|Purchased|
 |Op-amp|Microchip MCP6002-I/P (DIP-8)|Rail-to-rail, runs on 3.3 V. The **-I/P** suffix is the through-hole version|Purchased|
@@ -97,7 +97,7 @@ Status: **Received** = in hand, **Purchased** = ordered and on the way, **Needed
 |Capacitors|KEMET C315C100J5G5TA (10 pF C0G, 50 V, radial; or Vishay K100J15C0GF5TL2) and C320C104K5R5TA (100 nF X7R, radial)|Through-hole; surface-mount sizes (0402, 0603) won't fit a breadboard|Purchased|
 |Resistors|100 Ω, 10 kΩ, 100 kΩ, 1 MΩ, 10 MΩ, ¼ W through-hole|LED; LE pull-down; and the photodiode amp feedback (10 MΩ, with 1 MΩ and 100 kΩ as fallbacks if it saturates)|Purchased|
 |Breadboard and wiring|830-point solderless breadboard; Dupont jumper kit (M-M, M-F, F-F, 20 cm); GPIO T-Cobbler with 40-pin ribbon|See [for_dummies.md](for_dummies.md). Perfboard and a DIP-8 socket only for a later permanent build|Purchased|
-|Tools|Multimeter, soldering iron, wire strippers, flush cutters, craft knife, heat-shrink|For the antenna loop and checks during assembly|Needed|
+|Tools|Multimeter, soldering iron, wire strippers, flush cutters, craft knife, heat-shrink|For the antenna loop and checks during assembly|Rcvd|
 |Magnet|Small neodymium disc, about 6 to 10 mm|For the magnet test: splits the dip into pairs. Field falls off as about 1/distance³, so distance sets the splitting|Purchased|
 |ESD wrist strap|Antistatic wrist strap with coiled cord and clip|The MCP6002 and ADF4351 are static-sensitive; dry winter air makes it worse. Clip to a grounded point; no mat needed|Purchased|
 |Helping hands|Clamp stand with alligator clips|Holds the LED or laser aimed at the crystal, and the coax while soldering the loop|Purchased|
