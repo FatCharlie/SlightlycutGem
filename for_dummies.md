@@ -250,7 +250,7 @@ Do the steps in order. Each one ends with a check; don't move on until it passes
 
 ### Step 1: Solder the header onto the ADS1115
 
-The module's holes need pins so jumper wires can grip them.
+**Skip this step if your module came pre-soldered** (pins already fixed in a straight row). The module's holes need pins so jumper wires can grip them.
 
 1. Push the strip of header pins, **long side down**, into the breadboard, so the breadboard holds them straight.
 2. Lay the ADS1115 on top, with its labelled holes over the short ends of the pins.
@@ -332,7 +332,7 @@ Reversed, the circuit just reads 0 V and nothing is damaged.
 
 ### Step 4: Add the ADS1115
 
-1. Push the ADS1115 into the breadboard so its pins are each in their own column, away from the op-amp.
+1. Push the ADS1115 into the breadboard with its pins in row **e**, each pin in its own column, away from the op-amp. The module's body hangs out over the trench; that's fine, and it leaves holes a to d in each pin's column free for wires.
 2. Wire it:
 
 | ADS1115 pin | Goes to |
