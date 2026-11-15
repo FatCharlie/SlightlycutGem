@@ -40,6 +40,7 @@ You'll build it in this order: the light-chain electronics on a breadboard first
 * **Unplug the Pi before you change any wire.** Every time. Most beginner damage comes from moving a wire while the power is on and brushing the wrong pin.
 * **Never connect 5 V to anything marked 3.3 V, or to any Pi pin other than the 5 V and GND pins.** The Pi's signal pins are 3.3 V only, and 5 V kills them instantly with no warning.
 * **The green LED is bright.** Don't look straight into it.
+* **The laser (if you do the upgrade in section 8) needs laser safety glasses** rated OD 4+ at 520 nm, worn whenever it's on.
 * **The amplifier radiates up to about 100 mW at 2.9 GHz** (similar to a Wi-Fi router). Keep the loop away from your face while it runs.
 * **Soldering irons run at about 350 °C.** Use the stand, solder in a ventilated spot, and wash your hands after handling solder.
 
@@ -189,7 +190,7 @@ With a T-Cobbler you can ignore pin numbers entirely and wire by the printed lab
 | **ADS1115 module** (ADC) | Turns a voltage into a number for the Pi | `VDD GND SCL SDA ADDR ALRT A0 A1 A2 A3` |
 | **MCP6002** (op-amp) | Turns the photodiode's tiny current into a voltage | A black 8-leg chip; a notch or dot marks the pin 1 end |
 | **BPW34** (photodiode) | Turns light into a tiny current | A small flat square with two legs; find which leg is which with a multimeter (Step 3) |
-| **Green LED** | Lights the diamond | Long leg = + (anode). Flat edge on the rim = − (cathode). |
+| **Green LED** (5 mm, water clear, 515 to 525 nm) | Lights the diamond | Long leg = + (anode). Flat edge on the rim = − (cathode). |
 | **Resistors** | Limit current / set gain | Coloured stripes (table below) |
 | **Capacitors** | Smooth power / limit noise | A printed number code (table below) |
 | **RG316 pigtail** | Feeds the antenna loop | SMA plug at one end; coax then red/black wires at the other |
@@ -207,6 +208,7 @@ Read the stripes from the end opposite the gold one. The first two stripes are d
 | 100 Ω | brown, black, brown | LED |
 | 10 kΩ | brown, black, orange | Synth LE pull-down |
 | 1 MΩ | brown, black, green | Op-amp, if 10 MΩ is too much |
+| 100 kΩ | brown, black, yellow | Op-amp, if 1 MΩ is still too much (laser) |
 | 10 MΩ | brown, black, blue | Op-amp feedback |
 
 Colour codes are easy to misread. If you're not sure, measure it: set the multimeter to Ω (resistance) and touch the probes to the two legs.
@@ -359,6 +361,8 @@ The resistor limits the current to about 18 mA. Without it the LED burns out in 
 
 **Check:** power on. The LED lights. If it doesn't, it's probably reversed: swap its two wires (a reversed LED isn't damaged at 5 V through a resistor).
 
+How much light reaches the crystal falls off as 1 / distance², so plan to hold the LED as close to the block as you can: half the distance gives 4× the light.
+
 ### Step 6: Wire the synthesizer board
 
 **6a. Pull the P3 jumpers.** On the synth board, find the three small green caps on header **P3**. Pull them straight off with tweezers or fingernails and keep them in a bag; you can put them back to use the board over USB some day. They connect the board's own USB chip to the same control lines the Pi will drive, so they have to come off.
@@ -447,6 +451,8 @@ The diamond sits in its clear block. The crystal inside is tiny, and the whole p
 
 **Check:** dim the room. Look at the block through a spare piece of red gel. With the LED on, the crystal should glow faintly red. If it doesn't, re-aim the LED.
 
+With the generic 100-pack LEDs the glow is faint and so is the dip. Expect to average more: `--sweeps 20` or more instead of 5.
+
 ### Step 10: The final once-over
 
 With everything **unplugged**:
@@ -461,13 +467,41 @@ Then power up and move on to the README's software check.
 
 ---
 
-## 8. Common mistakes
+## 8. Upgrade: swap the LED for a green laser
+
+Do this **after** you've seen your first dip with the LED, so you're changing one thing at a time.
+
+**Why:** a focused laser puts nearly all of its 5 mW on the crystal, where the LED manages around 15 µW. Sensitivity improves with the square root of the light, so about 300× more light gives about 17× better sensitivity, and far less averaging.
+
+**The part:** a 520 nm direct-diode green **dot** laser module, 5 mW, rated 3 to 5 V, adjustable focus. It's a small brass cylinder about 6 mm across, with a tiny driver board and red/black leads on the back.
+
+**Laser safety, before you power it the first time:**
+
+* **Wear laser safety glasses marked OD 4+ at 520 nm** whenever it's on. Ordinary sunglasses do nothing.
+* Take off watches and rings, which can reflect the beam.
+* Keep the beam below eye level, and never look along it.
+* Put something matte and dark (card, a cloth) behind the block to catch light that passes through.
+* Check the dot is **green** the first time. These housings are identical to cheap red lasers, and red does nothing for NV centres.
+
+**Steps:**
+
+1. **Unplug the Pi.** Pull out the LED's two jumper wires and the 100 Ω resistor.
+2. **Wire the laser:** red lead → **5 V** rail, black lead → **GND** rail. **No resistor**: the little board on the back is the laser's driver and sets its own current. The tinned lead ends push into breadboard holes, or into the female ends of two M-F jumpers.
+3. **Focus it.** Wearing the glasses, power on and aim at a piece of white paper 1 to 2 cm away, the same distance the crystal will be. Hold the back half of the brass body and turn the front half (the groove marks the joint). If it won't turn, a dab of glue is locking it; twist firmly to break it free. Stop when the dot is as small as it gets, then lock the thread with a dab of nail polish.
+4. **Mount it.** Clip or tape the brass body so it shines into the crystal through a **side** face of the block, not the top, just like the LED. Pointing straight down would send the beam into the photodiode.
+5. **Re-check the amp.** With the laser on, the op-amp output (pin 1 column) should read somewhere between 0.1 and 3 V. If it sits at about 3.3 V, the amp is saturated: unplug and swap the 10 MΩ feedback resistor for **1 MΩ** (brown-black-green), or **100 kΩ** (brown-black-yellow) if it's still saturated.
+
+**Keep the LED parts.** If the laser ever misbehaves, swapping back to the LED is the quickest way to tell whether the laser or something else is at fault.
+
+## 9. Common mistakes
 
 | Symptom | Likely cause |
 |---|---|
 | The Pi won't boot, or reboots | A short between 5 V and GND; or the ribbon cable is offset by one row on the Pi. |
 | A part gets hot | Reversed power. Unplug at once. |
 | LED dark | LED reversed; or its resistor is in the wrong column and doesn't reach GND. |
+| Laser dot is red | You were sent the 650 nm version. It won't excite NV centres; get it replaced. |
+| Output stuck at 3.3 V after fitting the laser | Expected: swap the 10 MΩ for 1 MΩ or 100 kΩ (section 8, step 5). |
 | Op-amp output stuck near 3.3 V | Too much light (swap 10 MΩ for 1 MΩ), or pin 3 not on GND. |
 | Op-amp output stuck near 0 V | Photodiode reversed; or pin 8 isn't on 3.3 V. |
 | The ADC isn't found | VDD/GND swapped; SDA/SCL swapped; ADDR not on GND. |
@@ -475,7 +509,7 @@ Then power up and move on to the README's software check.
 
 ---
 
-## 9. Glossary
+## 10. Glossary
 
 | Word | Meaning |
 |---|---|
