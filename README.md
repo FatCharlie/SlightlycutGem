@@ -282,15 +282,6 @@ To turn dip positions into a field, use the formula from earlier: B∥ = (f₊ �
 
 SlightlyCutGem is a port of [Uncut Gem](https://github.com/QuantumVillage/UncutGem) by [Quantum Village](https://quantumvillage.org). The physics approach, optical design, diamond mount and choice of RF modules are theirs; the full design is described in their [arXiv paper](https://arxiv.org/abs/2509.18329). This port replaces the ESP32 firmware and PCB with Raspberry Pi software and off-the-shelf modules. All credit for the original idea goes to them; go star their repo.
 
-## Contributing
-
-Issues and pull requests are welcome, especially:
-
-* Real-hardware results: sweeps, photos, which modules you used.
-* Cheaper or easier NV diamond sources.
-* Support for other Pi models or ADCs.
-* A live-plot or web interface.
-
 ## License
 
 AGPL-3.0, matching the upstream Uncut Gem project.
