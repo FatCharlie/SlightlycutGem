@@ -105,7 +105,7 @@ Status: **Rcvd** = in hand, **Purchased** = ordered and on the way, **Needed** =
 |Light source|Cree C503B-GCN-CY0C0791 green 5 mm LED (527 nm, 30°) plus 100 Ω resistor|The default build|Purchased|
 |Light source upgrade|520 nm **direct-diode** green **dot** laser module, 5 mW, 3 to 5 V with built-in driver, adjustable focus (6 × 27 mm brass)|Puts most of its 5 mW on the crystal for several times better sensitivity than the LED. Not 532 nm DPSS (leaks infrared), not a line laser|Purchased|
 |Laser safety glasses|OD 4+ at 520 nm, rating printed on the frame|Required whenever the laser is powered; not needed for the LED build|Purchased|
-|Red filter|Red lighting gel: LEE 106 Primary Red, or Rosco Roscolux #27 Medium Red (equivalent)|Blocks the green, passes the red fluorescence. Sold by photo and stage-lighting stores (B&H, Adorama, Full Compass, LEE Filters USA), not electronics suppliers. Two layers block more green than one|Needed|
+|Red filter|Red lighting gel: LEE 106 Primary Red, or Rosco Roscolux #27 Medium Red (equivalent)|Blocks the green, passes the red fluorescence. Sold by photo and stage-lighting stores (B&H, Adorama, Full Compass, LEE Filters USA), not electronics suppliers. Two layers block more green than one|Purchased|
 |NV diamond|Adámas [ENMDNV800](https://www.adamasnano.com/single-particle-sensors): 800 µm NV crystal in a 12.5 × 12.5 × 7 mm clear block|Single crystal, so a magnet gives separate dip pairs|Purchased|
 |Capacitors|KEMET C315C100J5G5TA (10 pF C0G, 50 V, radial; or Vishay K100J15C0GF5TL2) and C320C104K5R5TA (100 nF X7R, radial)|Through-hole; surface-mount sizes (0402, 0603) won't fit a breadboard|Purchased|
 |Resistors|100 Ω, 10 kΩ, 100 kΩ, 1 MΩ, 10 MΩ, ¼ W through-hole|LED; LE pull-down; and the photodiode amp feedback (10 MΩ, with 1 MΩ and 100 kΩ as fallbacks if it saturates)|Purchased|
@@ -116,7 +116,7 @@ Status: **Rcvd** = in hand, **Purchased** = ordered and on the way, **Needed** =
 |Bench supply (optional)|Any adjustable DC supply with current limit|Run the RF amp from it at 5.0 V, 200 mA limit, instead of Pi pin 2; tie its − to the breadboard GND|Rcvd|
 |Optional|Clear 2-part epoxy|Fixes the block, gel and photodiode once everything works; Blu Tack or tape until then|Needed|
 
-**Still to buy:** a magnet, an ESD wrist strap, helping hands (optional), red gel, breadboard and wiring, tools you don't have, and the laser glasses before the laser goes in.
+**Still to buy:** a magnet, an ESD wrist strap, helping hands (optional), and a breadboard and T-Cobbler if you don't have them.
 
 **On the diamond:** you need diamond with a meaningful concentration of NV centers; ordinary gem or industrial diamond won't do. Fluorescent NV microdiamond from a specialist supplier is the practical route. If you find a cheaper or hobby-friendly source, please open an issue.
 
