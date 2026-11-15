@@ -96,6 +96,7 @@ The original Uncut Gem runs on an ESP32 with a custom PCB. SlightlyCutGem keeps 
 |Microwave synthesizer|"ADF435X EVAL Board" clone (ADF4351 with a CY7C68013A USB chip, 25 MHz reference, OUT+/OUT− SMA, barrel jack)|Pull the three P3 jumpers and drive it from the Pi through header P2. Avoid versions with an STM32 controller or touchscreen|Rcvd|
 |RF amplifier|30 to 4000 MHz, 40 dB broadband amplifier board, 5 V|The same type the original Uncut Gem V1 used|Rcvd|
 |RF cabling|SMA male-male cable (10 to 15 cm); SMA male to bare-wire pigtail|Pigtail carries the antenna loop|Rcvd|
+|Terminator|SMA **male** 50 Ω terminator, DC to 6 GHz (any power rating)|Caps the synth's unused OUT−; not RP-SMA. Optional, but keeps OUT+ power flat across the sweep|Purchased|
 |ADC|ADS1115 module (Adafruit 1085 or generic)|16-bit, I2C|Purchased|
 |Op-amp|Microchip MCP6002-I/P (DIP-8)|Rail-to-rail, runs on 3.3 V|Purchased|
 |Photodiode|Vishay BPW34||Needed|
