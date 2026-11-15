@@ -190,7 +190,7 @@ With a T-Cobbler you can ignore pin numbers entirely and wire by the printed lab
 | **ADS1115 module** (ADC) | Turns a voltage into a number for the Pi | `VDD GND SCL SDA ADDR ALRT A0 A1 A2 A3` |
 | **MCP6002** (op-amp) | Turns the photodiode's tiny current into a voltage | A black 8-leg chip; a notch or dot marks the pin 1 end |
 | **BPW34** (photodiode) | Turns light into a tiny current | A small flat square with two legs; find which leg is which with a multimeter (Step 3) |
-| **Green LED** (5 mm, water clear, 515 to 525 nm) | Lights the diamond | Long leg = + (anode). Flat edge on the rim = − (cathode). |
+| **Green LED** (Cree C503B, 5 mm, 527 nm) | Lights the diamond | Long leg = + (anode). Flat edge on the rim = − (cathode). |
 | **Resistors** | Limit current / set gain | Coloured stripes (table below) |
 | **Capacitors** | Smooth power / limit noise | A printed number code (table below) |
 | **RG316 pigtail** | Feeds the antenna loop | SMA plug at one end; coax then red/black wires at the other |
@@ -451,8 +451,6 @@ The diamond sits in its clear block. The crystal inside is tiny, and the whole p
 
 **Check:** dim the room. Look at the block through a spare piece of red gel. With the LED on, the crystal should glow faintly red. If it doesn't, re-aim the LED.
 
-With the generic 100-pack LEDs the glow is faint and so is the dip. Expect to average more: `--sweeps 20` or more instead of 5.
-
 ### Step 10: The final once-over
 
 With everything **unplugged**:
@@ -471,7 +469,7 @@ Then power up and move on to the README's software check.
 
 Do this **after** you've seen your first dip with the LED, so you're changing one thing at a time.
 
-**Why:** a focused laser puts nearly all of its 5 mW on the crystal, where the LED manages around 15 µW. Sensitivity improves with the square root of the light, so about 300× more light gives about 17× better sensitivity, and far less averaging.
+**Why:** a focused laser puts nearly all of its 5 mW on the crystal, where the Cree LED manages around 100 to 150 µW. Sensitivity improves with the square root of the light, so about 30 to 50× more light gives about 6× better sensitivity, and far less averaging.
 
 **The part:** a 520 nm direct-diode green **dot** laser module, 5 mW, rated 3 to 5 V, adjustable focus. It's a small brass cylinder about 6 mm across, with a tiny driver board and red/black leads on the back.
 

@@ -90,24 +90,30 @@ The original Uncut Gem runs on an ESP32 with a custom PCB. SlightlyCutGem keeps 
 
 ### Parts
 
+Status: **Rcvd** = in hand, **Purchased** = ordered and on the way, **Needed** = still to buy.
+
 |Item|Part|Notes|Status|
 |-|-|-|-|
 |Computer|Raspberry Pi 4 Model B and official 5.1 V / 3 A supply|Other Pis with SPI and I2C should work; untested|Rcvd|
 |Microwave synthesizer|"ADF435X EVAL Board" clone (ADF4351 with a CY7C68013A USB chip, 25 MHz reference, OUT+/OUT− SMA, barrel jack)|Pull the three P3 jumpers and drive it from the Pi through header P2. Avoid versions with an STM32 controller or touchscreen|Rcvd|
 |RF amplifier|30 to 4000 MHz, 40 dB broadband amplifier board, 5 V, SMA in and out|The same type the original Uncut Gem V1 used; check it's the 5 V version, not 12 V|Purchased|
-|RF cabling|SMA male-male cable (10 to 15 cm); SMA male to bare-wire pigtail|Pigtail carries the antenna loop|Rcvd|
+|RF cabling|SMA male-male cable (10 to 15 cm); SMA male to bare-wire pigtail (RG316)|Pigtail carries the antenna loop|Rcvd|
 |Terminator|SMA **male** 50 Ω terminator, DC to 6 GHz (any power rating)|Caps the synth's unused OUT−; not RP-SMA. Optional, but keeps OUT+ power flat across the sweep|Purchased|
-|ADC|ADS1115 module (Adafruit 1085 or generic)|16-bit, I2C|Purchased|
-|Op-amp|Microchip MCP6002-I/P (DIP-8)|Rail-to-rail, runs on 3.3 V|Purchased|
-|Photodiode|Vishay BPW34||Needed|
-|Light source|Green 5 mm LED, water clear, 515 to 525 nm, 30° or narrower, 3.0 to 3.2 V at 20 mA (generic 100-pack, about 1.5 cd), plus 100 Ω resistor|The default build. A brighter LED (e.g. Cree C503B-GCN-CY0C0791, 10 to 18 cd) gives about 3× better sensitivity|Purchased|
-|Light source upgrade|520 nm **direct-diode** green **dot** laser module, 5 mW, 3 to 5 V with built-in driver, adjustable focus (6 × 27 mm brass)|Puts most of its 5 mW on the crystal: about 17× better sensitivity than the generic LED. Not 532 nm DPSS (leaks infrared), not a line laser|Purchased|
-|Laser safety glasses|OD 4+ at 520 nm, rating printed on the frame|Required whenever the laser is powered|Needed|
+|ADC|ADS1115 module, pre-soldered header (Adafruit 1085 or generic)|16-bit, I2C|Purchased|
+|Op-amp|Microchip MCP6002-I/P (DIP-8)|Rail-to-rail, runs on 3.3 V. The **-I/P** suffix is the through-hole version|Purchased|
+|Photodiode|Vishay BPW34S (same part as BPW34, packed in tubes)|Through-hole, 430 to 1100 nm|Purchased|
+|Light source|Cree C503B-GCN-CY0C0791 green 5 mm LED (527 nm, 30°) plus 100 Ω resistor|The default build|Purchased|
+|Light source upgrade|520 nm **direct-diode** green **dot** laser module, 5 mW, 3 to 5 V with built-in driver, adjustable focus (6 × 27 mm brass)|Puts most of its 5 mW on the crystal for several times better sensitivity than the LED. Not 532 nm DPSS (leaks infrared), not a line laser|Purchased|
+|Laser safety glasses|OD 4+ at 520 nm, rating printed on the frame|Required whenever the laser is powered; not needed for the LED build|Needed|
 |Red filter|Red lighting gel (e.g. LEE 106 Primary Red)|Blocks the green, passes the red fluorescence|Needed|
-|NV diamond|Microdiamond with NV centers |[ENMDNV800](https://www.adamasnano.com/single-particle-sensors)|Purchased|
-|Passives|10 MΩ, 1 MΩ, 100 kΩ, 10 kΩ resistors; 10 pF and 100 nF ceramic capacitors||Needed|
-|Misc|Perfboard, DIP-8 socket, jumper wires, enameled copper wire (about 24 AWG), clear 2-part epoxy|Needed|
+|NV diamond|Adámas [ENMDNV800](https://www.adamasnano.com/single-particle-sensors): 800 µm NV crystal in a 12.5 × 12.5 × 7 mm clear block|Single crystal, so a magnet gives separate dip pairs|Purchased|
+|Capacitors|KEMET C315C100J1G5TA (10 pF C0G, radial) and C320C104K5R5TA (100 nF X7R, radial)|Through-hole; surface-mount sizes (0402, 0603) won't fit a breadboard|Purchased|
+|Resistors|100 Ω, 10 kΩ, 100 kΩ, 1 MΩ, 10 MΩ, ¼ W through-hole|LED; LE pull-down; and the photodiode amp feedback (10 MΩ, with 1 MΩ and 100 kΩ as fallbacks if it saturates)|Needed|
+|Breadboard and wiring|830-point solderless breadboard; Dupont jumper kit (M-M, M-F, F-F, 20 cm); GPIO T-Cobbler with 40-pin ribbon|See [for_dummies.md](for_dummies.md). Perfboard and a DIP-8 socket only for a later permanent build|Needed|
+|Tools|Multimeter, soldering iron, wire strippers, flush cutters, craft knife, heat-shrink|For the antenna loop and checks during assembly|Needed|
+|Optional|Clear 2-part epoxy|Fixes the block, gel and photodiode once everything works; Blu Tack or tape until then|Needed|
 
+**Still to buy:** resistors, red gel, breadboard and wiring, tools you don't have, and the laser glasses before the laser goes in.
 
 **On the diamond:** you need diamond with a meaningful concentration of NV centers; ordinary gem or industrial diamond won't do. Fluorescent NV microdiamond from a specialist supplier is the practical route. If you find a cheaper or hobby-friendly source, please open an issue.
 
