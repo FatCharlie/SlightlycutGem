@@ -43,7 +43,7 @@ Think of it as two loops that meet at the diamond: a microwave path that pokes t
    └───────────────────────┘
 ```
 
-Left column: the microwave chain, from the Pi down to the diamond. Right column: the light readout, from the diamond back up to the Pi.
+Left column: the microwave chain, from the Pi down to the diamond. Right column: the light readout, from the diamond back up to the Pi. The 2 to 3 mm wire loop isn't a separate part: it's bent from the end of the RG316 pigtail itself (see Step 8 of [for_dummies.md](for_dummies.md)).
 
 ---
 
