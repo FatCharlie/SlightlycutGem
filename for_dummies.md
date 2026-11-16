@@ -264,7 +264,9 @@ Do the steps in order. Each one ends with a check; don't move on until it passes
 
 ### Step 2: Set up the breadboard and T-Cobbler
 
-1. Plug the T-Cobbler into the breadboard so it straddles the centre trench, at one end of the board.
+Every step from here has a matching picture in [BREADBOARD.md](BREADBOARD.md), with each wire numbered. Follow the pictures and use the steps below for the details and checks.
+
+1. Plug the T-Cobbler into the breadboard so it straddles the centre trench, at the left end of the board (columns 3 to 22 in the pictures).
 2. Plug the ribbon cable into the T-Cobbler; the socket is keyed so it only fits one way.
 3. **With the Pi unplugged**, plug the other end of the ribbon cable onto the Pi's 40 pins. The coloured stripe on the cable (usually red) goes to **pin 1**, the end away from the USB ports. Make sure all 40 pins are inside the socket, not offset by one row.
 4. Use the breadboard's rails like this, and label them with tape:
@@ -297,29 +299,31 @@ This is the most detailed step, so take it slowly.
    (ground) └───────┘
 ```
 
-Press it into the breadboard straddling the trench, notch to the left, so it occupies columns 20 to 23 (any spot works; these column numbers are just for this guide):
+Press it into the breadboard straddling the trench, **notch to the left**, in columns 40 to 43 (Page 2 of [BREADBOARD.md](BREADBOARD.md)). Turning the chip so the notch points left puts **pin 1 at the bottom left**:
 
 ```text
-         col 20   21   22   23
-  row e    1    2    3    4      ◄ chip pins 1 to 4 (above the trench)
-         ════════ trench ════════
-  row f    8    7    6    5      ◄ chip pins 8 to 5 (below the trench)
+         col 40   41   42   43
+  row e    8    7    6    5      ◄ chip pins 8 to 5 (above the trench)
+     notch ◖═══ trench ═══════
+  row f    1    2    3    4      ◄ chip pins 1 to 4 (below the trench)
 ```
 
-Now column 20 above the trench is pin 1, column 20 below it is pin 8, and so on. Each leg shares its column with four free holes.
+Double-check this before wiring: pin 8 (power) must be top left and pin 4 (ground) bottom right. A chip in backwards gets its power reversed and dies. Each leg shares its column with four free holes.
 
 **3b. Wire the chip.** Every connection lands in that leg's column:
 
 | From | To | How |
 |---|---|---|
-| Pin 8 (col 20, below) | 3.3 V rail | Jumper wire |
-| Pin 4 (col 23, above) | GND rail | Jumper wire |
-| Pin 8 | Pin 4 | **100 nF** capacitor (`104`), as close to the chip as you can reach. It smooths the chip's power. |
-| Pin 3 (col 22, above) | GND rail | Jumper wire |
-| Pin 1 (col 20, above) | Pin 2 (col 21, above) | **10 MΩ** resistor (brown-black-blue) |
-| Pin 1 | Pin 2 | **10 pF** capacitor (`100`), beside the resistor: both bridge the same two columns |
-| Pin 5 (col 23, below) | GND rail | Jumper wire. This turns off the unused second half of the chip. |
-| Pin 6 (col 22, below) | Pin 7 (col 21, below) | Short jumper wire. Also part of turning off the unused half. |
+| From | To | How (wire or part number in BREADBOARD.md) |
+|---|---|---|
+| Pin 8 (col 40, above) | 3.3 V rail | Jumper wire (5) |
+| Pin 8 column (col 40, above) | top GND rail | **100 nF** capacitor (`104`), C1. It smooths the chip's power. |
+| Pin 5 (col 43, above) | GND rail | Jumper wire (6). This turns off the unused second half of the chip. |
+| Pin 6 (col 42, above) | Pin 7 (col 41, above) | Short jumper wire (7). Also part of turning off the unused half. |
+| Pin 3 (col 42, below) | GND rail | Jumper wire (8) |
+| Pin 4 (col 43, below) | GND rail | Jumper wire (9) |
+| Pin 1 (col 40, below) | Pin 2 (col 41, below) | **10 MΩ** resistor (brown-black-blue), R1 |
+| Pin 1 | Pin 2 | **10 pF** capacitor (`100`), C2, beside the resistor: both bridge the same two columns |
 
 **3c. Identify the photodiode's legs.** Set the multimeter to diode test (the diode symbol, ─▶|─). Touch the probes to the two legs. One way round it reads about 0.3 to 0.6 V; the other way it reads OL (open). When it reads a voltage, **the red probe is on the anode and the black probe is on the cathode.** Mark the cathode with a dot of marker pen.
 
@@ -334,7 +338,7 @@ Reversed, the circuit just reads 0 V and nothing is damaged.
 
 ### Step 4: Add the ADS1115
 
-1. Push the ADS1115 into the breadboard with its pins in row **e**, each pin in its own column, away from the op-amp. The module's body hangs out over the trench; that's fine, and it leaves holes a to d in each pin's column free for wires.
+1. Push the ADS1115 into the breadboard with its pins in row **e**, each pin in its own column, in columns 50 to 59 (Page 3 of [BREADBOARD.md](BREADBOARD.md)). The module's body hangs out over the trench; that's fine, and it leaves holes a to d in each pin's column free for wires.
 2. Wire it:
 
 | ADS1115 pin | Goes to |
@@ -355,7 +359,7 @@ The LED has to point at the diamond, so put it on wires too.
 
 1. Slide two **F-M** jumpers onto the LED's legs.
 2. **Long leg (anode, +)** → the **5 V** rail.
-3. **Short leg (cathode, −; the flat edge of the rim)** → an empty breadboard column. From that column, put the **100 Ω resistor** (brown-black-brown) across to the **GND** rail.
+3. **Short leg (cathode, −; the flat edge of the rim)** → an empty breadboard column (column 33 in Page 5 of [BREADBOARD.md](BREADBOARD.md)). From that column, put the **100 Ω resistor** (brown-black-brown) across to the **GND** rail.
 
 The resistor limits the current to about 18 mA. Without it the LED burns out in a moment.
 
@@ -369,7 +373,7 @@ How much light reaches the crystal falls off as 1 / distance², so plan to hold 
 
 **6b. Check the P3 jumpers didn't do the board's job too.** Set the multimeter to continuity. Touch one probe to P2's **LE** pin and the other to the matching pin on the synth chip's side of P3; it should beep. Do the same for **CLK** and **DAT**. If a pin doesn't beep, stop: your board is wired differently from the one this guide was written for, so check its schematic before going on.
 
-**6c. The LE pull-down resistor.** LE needs a 10 kΩ resistor to ground so it stays low while the Pi boots. Pick an empty breadboard column and call it the **LE column**. Put the **10 kΩ** resistor (brown-black-orange) from the LE column to the **GND** rail.
+**6c. The LE pull-down resistor.** LE needs a 10 kΩ resistor to ground so it stays low while the Pi boots. Pick an empty breadboard column below the trench (column 28 in Page 4 of [BREADBOARD.md](BREADBOARD.md)) and call it the **LE column**. Put the **10 kΩ** resistor (brown-black-orange) from the LE column to the **GND** rail.
 
 **6d. Wire header P2 to the Pi.** Use **M-F** jumpers: the female end goes onto the P2 pin; the male end goes into the breadboard.
 

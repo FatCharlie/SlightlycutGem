@@ -103,7 +103,7 @@ Status: **Rcvd** = in hand, **Purchased** = ordered and on the way, **Needed** =
 
 ### Wiring
 
-New to wiring? [for_dummies.md](for_dummies.md) walks through the whole assembly step by step, including how to find each Pi pin and which connectors to buy.
+New to wiring? [for_dummies.md](for_dummies.md) walks through the whole assembly step by step, including how to find each Pi pin and which connectors to buy. [BREADBOARD.md](BREADBOARD.md) has top-down pictures of the breadboard with every wire numbered.
 
 Pi pins are physical header numbers; the same assignments live in code in `gem/config.py`. Wire the synth by the silkscreen labels on its 10-pin header P2 (LE, CLK, DAT, GD, 3V3 on one row; MUX, LD, PDR, CE, GD on the other). Before wiring, pull the three green jumpers on header P3: they connect the board's own USB chip to the same control lines. Leave P2's 3V3, MUX and PDR unconnected.
 
